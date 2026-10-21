@@ -1,0 +1,435 @@
+{
+  "name": "Herramienta - Recordatorio Manual por ID",
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "9fb4f589-45cf-483a-b912-a88d533d058a",
+              "leftValue": "={{ $json.Razon_Social }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "2c9a2f89-04e4-4a7b-86c8-e245e21be08f",
+              "leftValue": "={{ $json.Estado_DJ }}",
+              "rightValue": "Presentada",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            },
+            {
+              "id": "6c87649e-0a55-49d1-b9ea-f69e8a1faa37",
+              "leftValue": "={{ $json.Estado_Doc }}",
+              "rightValue": "Pendiente",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        448,
+        32
+      ],
+      "id": "5891f60c-47d8-4603-a811-adb18dc1012c",
+      "name": "Cliente Valido?"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "ID",
+              "type": "number"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "e3ccbfd1-284f-4d1c-af68-1396dd30d092",
+      "name": "Entrada Recordatorio"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1iTWS_Ypj_WH_afF1LJqNtWBiD8wlQH2CTJLffkCZRJw",
+          "mode": "list",
+          "cachedResultName": "BD_Estudio_Contable_n8n",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iTWS_Ypj_WH_afF1LJqNtWBiD8wlQH2CTJLffkCZRJw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Cartera_clientes",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iTWS_Ypj_WH_afF1LJqNtWBiD8wlQH2CTJLffkCZRJw/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "ID",
+              "lookupValue": "={{ $json.ID }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        224,
+        0
+      ],
+      "id": "8e8915fe-a8bc-465d-ba78-2b79d1f5f486",
+      "name": "Buscar Cliente por ID",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "mH0PacnOnaIfc855",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "RfeT1MWXoN0V1jJa",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/RfeT1MWXoN0V1jJa",
+          "cachedResultName": "Módulo 3 - Subworkflow Comunicaciones y monitoreo"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Razon_Social": "={{ $json.Razon_Social }}",
+            "Email_Cliente": "={{ $json.Email_Cliente }}",
+            "Nivel_Alerta": "={{ $json.Nivel_Alerta }}",
+            "Dias_Restantes": "={{ Number($json.Dias_Restantes) }}",
+            "Impuestos_A_Liquidar": "={{ $json.Impuestos_A_Liquidar }}",
+            "Consultor": "={{ $json.Consultor }}",
+            "Canal_Destino": "CLIENTE",
+            "Origen": "Recordatorio manual"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Razon_Social",
+              "displayName": "Razon_Social",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "Email_Cliente",
+              "displayName": "Email_Cliente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "Nivel_Alerta",
+              "displayName": "Nivel_Alerta",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "Dias_Restantes",
+              "displayName": "Dias_Restantes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number",
+              "removed": false
+            },
+            {
+              "id": "Impuestos_A_Liquidar",
+              "displayName": "Impuestos_A_Liquidar",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "Consultor",
+              "displayName": "Consultor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "Canal_Destino",
+              "displayName": "Canal_Destino",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "Origen",
+              "displayName": "Origen",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.4,
+      "position": [
+        752,
+        0
+      ],
+      "id": "5aa867fa-74e0-4ac7-8c53-e985fe572abd",
+      "name": "Enviar Via Modulo 3"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f6cd37f6-4489-46e3-bf66-a647ae704fad",
+              "name": "resultado",
+              "value": "=Recordatorio enviado por email a {{ $('Buscar Cliente por ID').item.json.Razon_Social }} ({{ $('Buscar Cliente por ID').item.json.Email_Cliente }}).",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        976,
+        0
+      ],
+      "id": "f8e1d272-d5da-45fd-8819-b3b0244bb909",
+      "name": "Respuesta OK"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ec099a5e-2cef-4ff6-90dd-f823d10f3480",
+              "name": "resultado",
+              "value": "={{ !$json.Razon_Social ? 'No se envió ningún recordatorio: no existe un cliente con ese ID.' : $json.Estado_DJ === 'Presentada' ? `No se envió ningún recordatorio: la declaración jurada de ${$json.Razon_Social} ya está presentada.` : `No se envió ningún recordatorio: ${$json.Razon_Social} ya entregó su documentación (estado: ${$json.Estado_Doc}), así que no hay nada que pedirle. Si hay un atraso, es interno del estudio.` }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        752,
+        160
+      ],
+      "id": "2f190c93-3251-4451-bd19-caa7b0f1f8a9",
+      "name": "Respuesta Rechazo"
+    },
+    {
+      "parameters": {
+        "content": "## 🛡️ Recordatorio Manual por ID\n\nEste sub-workflow es un **intermediario de seguridad** entre los clientes MCP (agente de Telegram o Claude) y los envíos de email.\n\n🎯 **¿Para qué sirve?** El cliente MCP solo manda el **ID**. Este flujo busca el correo real en la cartera, valida que corresponda enviar y recién entonces envía.\n\n▶️ **¿Cómo se ejecuta?** Lo llama la herramienta *Enviar Recordatorio* del Modulo 2A. No necesita estar activo.\n\n📋 **Orden del proceso:** 1) Recibir ID → 2) Buscar y validar → 3) Enviar o rechazar",
+        "width": 1200
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -64,
+        -352
+      ],
+      "id": "caf74bab-9682-492a-a3af-5332981a9df6",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "### 🔎 Paso 1: Recibir el ID y buscar al cliente\n\n**Entrada Recordatorio** recibe un único dato: el `ID`.\n\n**Buscar Cliente por ID** trae sus datos reales de la cartera.\n\n💡 Si el ID no existe, el flujo sigue igual para poder responder el rechazo.",
+        "height": 448,
+        "width": 464,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -64,
+        -192
+      ],
+      "id": "bdcfcd22-7949-4939-8265-f22ea138868c",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "### ✅ Paso 2: Validar\n\nSolo se envía si se cumplen las tres condiciones:\n- el cliente **existe**;\n- su declaración jurada **no está presentada**;\n- su documentación está **pendiente**.\n\n\n\n\n\n\n\n\n\n\n\n\n💡 Al cliente solo le escribimos cuando necesitamos pedirle algo. Si la documentación ya está en el estudio, cualquier atraso es interno.\n",
+        "height": 496,
+        "width": 256,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        400,
+        -192
+      ],
+      "id": "01468e46-c4b0-4f69-9ec3-f95574b6fa0e",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "### 📧 Paso 3: Enviar o rechazar\n\n- ✔️ **Enviar Via Modulo 3** manda el email con los datos de la cartera y el nivel actual del cliente. Queda registrado en el panel con origen *Recordatorio manual*. **Respuesta OK** confirma el envío.\n- ❌ **Respuesta Rechazo** explica el motivo exacto: el ID no existe, la DJ ya está presentada o la documentación ya fue entregada.\n\nLa respuesta vuelve al cliente MCP, que se la informa al consultor.\n",
+        "height": 496,
+        "width": 480,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        656,
+        -192
+      ],
+      "id": "6cbeedb8-f00c-4357-b08a-d33c61a1b6d5",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "### ⚠️ Antes de ejecutar: credenciales necesarias\n\n- 🔑 **Google Sheets (OAuth2):** buscar al cliente.\n- 🔗 **Módulo 3** guardado.",
+        "height": 96,
+        "width": 464,
+        "color": "#BF3636"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -64,
+        208
+      ],
+      "id": "dc98d9f5-3828-4659-94e4-2c70254595e4",
+      "name": "Sticky Note4"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Entrada Recordatorio": {
+      "main": [
+        [
+          {
+            "node": "Buscar Cliente por ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Cliente por ID": {
+      "main": [
+        [
+          {
+            "node": "Cliente Valido?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cliente Valido?": {
+      "main": [
+        [
+          {
+            "node": "Enviar Via Modulo 3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respuesta Rechazo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar Via Modulo 3": {
+      "main": [
+        [
+          {
+            "node": "Respuesta OK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": true,
+    "timeSavedMode": "fixed",
+    "errorWorkflow": "RfeT1MWXoN0V1jJa",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "4e7c4fe1-ebec-492c-9853-e225a38157ed",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "51d9ef5f9325bde941666f96ee2329ba347896138327a33c5629fba04ceee4ef"
+  },
+  "nodeGroups": [],
+  "id": "ZYGfXkWfH1tuKJD2",
+  "tags": []
+}

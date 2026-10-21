@@ -1,0 +1,309 @@
+{
+  "name": "Modulo 2B: Agente en Telegram",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {
+          "chatIds": "7978085144"
+        }
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        -80,
+        144
+      ],
+      "id": "7973012d-bd0e-49cc-8f29-f81e06878492",
+      "name": "Telegram Trigger",
+      "webhookId": "d9ec3327-0bdd-4d1f-a8c6-948d7343f782",
+      "credentials": {
+        "telegramApi": {
+          "id": "6Sw0G6Jc0lw6mear",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }}",
+        "options": {
+          "systemMessage": "=# ROL\nEres el Asistente Senior de Impuestos del estudio contable. Ayudas a los consultores a monitorear los vencimientos fiscales de su cartera de clientes según su régimen (CEDE, NO_CEDE, PEQUENA_EMPRESA).\n\n# CONTEXTO\nHoy es {{ $now.toFormat('dd/MM/yyyy') }}.\n\nTienes cuatro herramientas:\n- Consultar_Estado_Cartera_Clientes: lee la cartera completa.\n- Registrar_recepcion_de_documentos: cambia el estado de la documentación de un cliente.\n- Registrar_Estado_DJ: cambia el estado de la declaración jurada de un cliente.\n- Enviar_Recordatorio: envía un recordatorio por correo a un cliente.\n\n# REGLAS\n1. Siempre consulta primero \"Consultar_Estado_Cartera_Clientes\" antes de responder sobre clientes o antes de actualizar o notificar a un cliente, para conocer su ID, su razón social exacta, su correo y sus días restantes.\n2. Los días restantes y el nivel de alerta corresponden a la última corrida automática del motor de vencimientos, no necesariamente a hoy. Si la fecha de vencimiento no coincide con los días indicados, avísalo.\n3. Nunca inventes datos. Si falta un dato o hay más de un cliente que coincide, pregunta antes de actuar.\n4. Para cambiar el estado de la documentación usa \"Registrar_recepcion_de_documentos\" con el ID del cliente y uno de estos valores exactos: Pendiente, Recibida o Validada.\n5. Para cambiar el estado de la declaración jurada usa \"Registrar_Estado_DJ\" con el ID del cliente y uno de estos valores exactos: No_Presentada, En_Borrador o Presentada.\n6. No modifiques ninguna otra columna de la cartera. Si el contador pide cambiar otro dato, explícale que solo puedes actualizar el estado de la documentación y de la DJ.\n7. Nunca confirmes una actualización sin haber llamado a la herramienta y recibido una fila actualizada como resultado. Al confirmar, indica exactamente qué cambiaste y en qué cliente.\n8. Antes de usar \"Enviar_Recordatorio\", muestra al contador el cliente, su correo, el nivel de alerta y los días restantes tomados de la cartera, y pregunta: \"¿Confirmás el envío?\". Solo llama a la herramienta si el contador responde afirmativamente en su siguiente mensaje. Si responde que no o cambia de tema, no envíes nada.\n9. \"Enviar_Recordatorio\" recibe únicamente el ID del cliente; no puedes elegir ni cambiar el correo de destino. Los recordatorios se envían solo por correo al cliente. Informa al contador exactamente el resultado que devuelve la herramienta; si el envío fue rechazado, explica el motivo que indica.\n10. Sé conciso y profesional, y presenta los datos en listas.\n11. Al responder, no muestres los códigos internos tal cual. Reemplaza los guiones bajos por espacios y escribe los niveles de alerta y estados en mayúscula: por ejemplo, \"URGENTE INTERNO\" en vez de URGENTE_INTERNO, \"NO CEDE\" en vez de NO_CEDE, \"NO PRESENTADA\" en vez de No_Presentada. No uses asteriscos, guiones bajos de formato ni Markdown; para listas usa el símbolo • al inicio de cada línea. Esto aplica solo a lo que escribes en tu respuesta: cuando llames a una herramienta, usa siempre los valores exactos."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        400,
+        144
+      ],
+      "id": "244230ad-0b0f-4c8f-ba36-ebb074318eff",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.5-flash-lite",
+        "options": {
+          "temperature": 0.1
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        272,
+        304
+      ],
+      "id": "e42420e0-70ef-4ad7-afcc-48ab42628e7e",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "McL6nF9YLKHYRkAi",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "contextWindowLength": 4
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        480,
+        320
+      ],
+      "id": "b4468c50-8649-4f6a-bad0-50b68bb23960",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "endpointUrl": "https://guidoaldama.app.n8n.cloud/mcp/mcp-estudio-fiscal",
+        "authentication": "headerAuth",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1.4,
+      "position": [
+        720,
+        320
+      ],
+      "id": "6fa437cd-e75e-4a67-a7fa-500e3628deef",
+      "name": "MCP Client",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "WMER0DnbGgnrYLHg",
+          "name": "Header Auth account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const texto = String($input.first().json.output || '');\nconst limpio = texto\n  .replace(/&/g, '&amp;')\n  .replace(/</g, '&lt;')\n  .replace(/>/g, '&gt;')\n  .replace(/\\*\\*/g, '')   // quita negritas Markdown del modelo\n  .replace(/^\\s*\\*\\s+/gm, '• '); // viñetas con * pasan a •\nreturn [{ json: { texto: limpio } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1040,
+        144
+      ],
+      "id": "8c254361-f6b9-42dc-8da8-eaa0de30e1ec",
+      "name": "Limpia el texto"
+    },
+    {
+      "parameters": {
+        "content": "## 🤖 Agente Tributario en Telegram (Cliente MCP 1)\n\nEste flujo es **uno de los dos clientes** del servidor MCP (el otro es **Claude**). Recibe los mensajes del consultor por **Telegram**, los interpreta con un **agente de IA** y responde usando las herramientas del Modulo 2A.\n\n🎯 **¿Para qué sirve?** Para consultar la cartera, registrar documentación, actualizar el estado de la DJ y enviar recordatorios **desde el celular, sin abrir la planilla**. Suma reglas propias que Claude no tiene, como la **confirmación antes de enviar**.\n\n▶️ **¿Cómo se ejecuta?** Solo, cada vez que el consultor le escribe al bot.\n\n📋 **Orden del proceso:** 1) Recibir mensaje → 2) Agente de IA → 3) Limpiar y responder",
+        "height": 192,
+        "width": 1968
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -464,
+        -384
+      ],
+      "id": "ea1649a2-d559-4098-b0ca-e455017e1131",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "### 💬 Paso 1: Recibir el mensaje\n\nEscucha los mensajes que llegan al bot.\n\n🔒 Restringido al **Chat ID autorizado**, configurado en las opciones del propio Telegram Trigger: los mensajes de cualquier otro chat se ignoran antes de llegar al agente.",
+        "height": 624,
+        "width": 304,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        -192
+      ],
+      "id": "14660d3d-e822-4542-8b15-9fdc8c72c54c",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "### 🧠 Paso 2: Agente de IA\n\nEl **AI Agent** decide qué herramienta usar y redacta la respuesta. Lo alimentan 3 nodos:\n- **Google Gemini Chat Model:** el modelo de lenguaje (temperatura 0.1, para no inventar).\n- **Simple Memory:** recuerda las últimas 4 interacciones de cada chat.\n- **MCP Client:** se conecta al servidor de herramientas (Modulo 2A).\n\n✅ Reglas clave del prompt:\n- consulta la cartera antes de actuar y no inventa datos;\n- avisa si los datos parecen de una corrida anterior;\n- **pide confirmación antes de enviar un recordatorio**;\n- solo confirma una acción si la herramienta devolvió un resultado exitoso;\n- responde sin códigos internos.\n\n💡 Estas reglas son propias de este agente y dependen de que el modelo las respete. Las restricciones de seguridad están en las herramientas del Modulo 2A.",
+        "height": 624,
+        "width": 816,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        144,
+        -192
+      ],
+      "id": "21fdcb53-86ce-443a-917a-310b8d956be4",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "### 📤 Paso 3: Limpiar y responder\n\n**Limpia el texto** prepara la respuesta en HTML para que Telegram no la rechace por caracteres especiales.\n\n**Respuesta al consultor** la envía al mismo chat.",
+        "height": 624,
+        "width": 544,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        960,
+        -192
+      ],
+      "id": "19bb2f8f-6ab4-4eb6-a308-377f84ee0000",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n### ⚠️ Antes de ejecutar: credenciales necesarias\n\n- 🔑 **Telegram API:** token del bot.\n- 🔑 **Google Gemini API:** modelo de lenguaje.\n- 🔑 **Header Auth (`x-api-key`):** conexión con el servidor MCP.\n\n⚠️ El Modulo 2A debe estar activo.",
+        "height": 624,
+        "width": 304,
+        "color": "#8C2C2C"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -464,
+        -192
+      ],
+      "id": "6773aae9-cba1-4ea0-be12-0ce661c3dcf1",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.texto }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1328,
+        144
+      ],
+      "id": "8b3adc99-10cb-4056-af0c-f8cc8938bdb7",
+      "name": "Respuesta al consultor",
+      "webhookId": "76ddbe41-4071-4869-83ce-7a1d071252b7",
+      "credentials": {
+        "telegramApi": {
+          "id": "6Sw0G6Jc0lw6mear",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Client": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Limpia el texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limpia el texto": {
+      "main": [
+        [
+          {
+            "node": "Respuesta al consultor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": true,
+    "timeSavedMode": "fixed",
+    "errorWorkflow": "RfeT1MWXoN0V1jJa",
+    "callerPolicy": "workflowsFromSameOwner",
+    "timezone": "America/Montevideo"
+  },
+  "versionId": "1a79cbda-039e-4e21-8e92-c935661f2167",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "51d9ef5f9325bde941666f96ee2329ba347896138327a33c5629fba04ceee4ef"
+  },
+  "nodeGroups": [],
+  "id": "ZsjY8tbMbR9hx0Hz",
+  "tags": []
+}

@@ -1,0 +1,1108 @@
+{
+  "name": "Modulo 1 - Vencimientos",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "control-vencimientos",
+        "authentication": "headerAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        48
+      ],
+      "id": "76e11a77-87e6-46fc-ad6e-c8f1ae0ed95c",
+      "name": "Webhook",
+      "webhookId": "5609dc67-ec05-4db8-af84-6169bb2653aa",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "WMER0DnbGgnrYLHg",
+          "name": "Header Auth account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 8,
+              "triggerAtMinute": 30
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        -128
+      ],
+      "id": "51d85f85-66c1-40d4-a60e-94e7568e2bda",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1iTWS_Ypj_WH_afF1LJqNtWBiD8wlQH2CTJLffkCZRJw",
+          "mode": "list",
+          "cachedResultName": "BD_Estudio_Contable_n8n",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iTWS_Ypj_WH_afF1LJqNtWBiD8wlQH2CTJLffkCZRJw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Cartera_clientes",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iTWS_Ypj_WH_afF1LJqNtWBiD8wlQH2CTJLffkCZRJw/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        416,
+        -128
+      ],
+      "id": "72ceee83-61a6-410f-adca-ec94f58fcf3a",
+      "name": "Leer Cartera Clientes",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "mH0PacnOnaIfc855",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1iTWS_Ypj_WH_afF1LJqNtWBiD8wlQH2CTJLffkCZRJw",
+          "mode": "list",
+          "cachedResultName": "BD_Estudio_Contable_n8n",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iTWS_Ypj_WH_afF1LJqNtWBiD8wlQH2CTJLffkCZRJw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 99819982,
+          "mode": "list",
+          "cachedResultName": "Calendario_Fiscal",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iTWS_Ypj_WH_afF1LJqNtWBiD8wlQH2CTJLffkCZRJw/edit#gid=99819982"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        416,
+        48
+      ],
+      "id": "80b38139-e425-43d6-a5e3-d5f7ed4f8488",
+      "name": "Leer Calendario Fiscal",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "mH0PacnOnaIfc855",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "fieldsToMatchString": "=Regimen",
+        "options": {
+          "clashHandling": {
+            "values": {
+              "resolveClash": "preferLast"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        816,
+        -96
+      ],
+      "id": "8a0d2d58-e35e-4234-9495-2f5836e35b62",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1iTWS_Ypj_WH_afF1LJqNtWBiD8wlQH2CTJLffkCZRJw",
+          "mode": "list",
+          "cachedResultName": "BD_Estudio_Contable_n8n",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iTWS_Ypj_WH_afF1LJqNtWBiD8wlQH2CTJLffkCZRJw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Cartera_clientes",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iTWS_Ypj_WH_afF1LJqNtWBiD8wlQH2CTJLffkCZRJw/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ID": "={{ $json.ID }}",
+            "Razon_Social": "={{ $json.Razon_Social }}",
+            "Fecha_Vencimiento": "={{ $json.Fecha_Vencimiento }}",
+            "Dias_Restantes": "={{ $json.Dias_Restantes }}",
+            "Nivel_Alerta": "={{ $json.Nivel_Alerta }}",
+            "Accion_Sugerida": "={{ $json.Accion_Sugerida }}",
+            "RUT": "={{ $json.RUT }}",
+            "Ultimo_Digito": "={{ $json.Ultimo_Digito}}",
+            "Regimen": "={{ $json.Regimen }}",
+            "Email_Cliente": "={{ $json.Email_Cliente }}",
+            "Telegram_ID": "={{ $json.Telegram_ID }}",
+            "Estado_Doc": "={{ $json.Estado_Doc }}",
+            "Estado_DJ": "={{ $json.Estado_DJ }}",
+            "Consultor": "={{ $json.Consultor }}",
+            "Ultimo_Aviso": "={{ $json.Ultimo_Aviso }}",
+            "Aviso_Registrado": "={{ $json.Aviso_Registrado }}"
+          },
+          "matchingColumns": [
+            "ID"
+          ],
+          "schema": [
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Razon_Social",
+              "displayName": "Razon_Social",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "RUT",
+              "displayName": "RUT",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Ultimo_Digito",
+              "displayName": "Ultimo_Digito",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Regimen",
+              "displayName": "Regimen",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Email_Cliente",
+              "displayName": "Email_Cliente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Telegram_ID",
+              "displayName": "Telegram_ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Estado_Doc",
+              "displayName": "Estado_Doc",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Estado_DJ",
+              "displayName": "Estado_DJ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Consultor",
+              "displayName": "Consultor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Fecha_Vencimiento",
+              "displayName": "Fecha_Vencimiento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Dias_Restantes",
+              "displayName": "Dias_Restantes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Nivel_Alerta",
+              "displayName": "Nivel_Alerta",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Accion_Sugerida",
+              "displayName": "Accion_Sugerida",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Impuestos_A_Liquidar",
+              "displayName": "Impuestos_A_Liquidar",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ultimo_Aviso",
+              "displayName": "Ultimo_Aviso",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Aviso_Registrado",
+              "displayName": "Aviso_Registrado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1408,
+        -80
+      ],
+      "id": "e3a83174-cc52-4127-912c-e9b57f0e6151",
+      "name": "Actualizar Cartera Clientes",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "mH0PacnOnaIfc855",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const hoyUTC = Date.UTC($now.year, $now.month - 1, $now.day);\nconst hoyTexto = $now.toFormat('dd/MM/yyyy');\nconst NIVELES_CON_AVISO = ['VENCIDO', 'CRITICO', 'URGENTE_INTERNO', 'PREVENTIVO'];\nconst REPETIR_CADA_DIAS = { VENCIDO: 3 };\n\nfunction parsearFecha(valor) {\n  if (valor === undefined || valor === null || valor === '') return null;\n  if (typeof valor === 'number') return Date.UTC(1899, 11, 30) + Math.round(valor) * 86400000;\n  const t = String(valor).trim();\n  let m = t.match(/^(\\d{1,2})\\/(\\d{1,2})\\/(\\d{4})/);\n  if (m) return Date.UTC(+m[3], +m[2] - 1, +m[1]);\n  m = t.match(/^(\\d{4})-(\\d{1,2})-(\\d{1,2})/);\n  if (m) return Date.UTC(+m[1], +m[2] - 1, +m[3]);\n  return null;\n}\n\nreturn $input.all().map(item => {\n  const data = item.json;\n\n  const fechaVencUTC = parsearFecha(data.Fecha_Vencimiento);\n  if (fechaVencUTC === null) {\n    throw new Error(`Fecha_Vencimiento inválida para ${data.Razon_Social}: \"${data.Fecha_Vencimiento}\"`);\n  }\n  const diasRestantes = Math.round((fechaVencUTC - hoyUTC) / 86400000);\n\n  let nivelAlerta = 'NORMAL';\n  let accionSugerida = 'Sin acción inmediata';\n\n  if (data.Estado_DJ === 'Presentada') {\n    nivelAlerta = 'COMPLETADO';\n    accionSugerida = 'Declaración Jurada ya presentada';\n  } else if (diasRestantes < 0 && data.Estado_Doc === 'Pendiente') {\n    nivelAlerta = 'VENCIDO';\n    accionSugerida = 'Escalar urgente a Gerente de Impuestos (riesgo de multas y recargos)';\n  } else if (diasRestantes < 0) {\n    nivelAlerta = 'URGENTE_INTERNO';\n    accionSugerida = 'DJ vencida con documentación ya en el estudio: presentar de inmediato y escalar al Gerente de Impuestos';\n  } else if (diasRestantes <= 2 && data.Estado_Doc === 'Pendiente') {\n    nivelAlerta = 'CRITICO';\n    accionSugerida = 'Intimar documentación al cliente y alertar al equipo';\n  } else if (diasRestantes <= 2) {\n    nivelAlerta = 'URGENTE_INTERNO';\n    accionSugerida = 'Documentación en estudio: apurar cierre y envío de DJ';\n  } else if (diasRestantes <= 5 && data.Estado_Doc === 'Pendiente') {\n    nivelAlerta = 'PREVENTIVO';\n    accionSugerida = 'Enviar recordatorio solicitando información';\n  }\n\n  // Clave del aviso: nivel + vencimiento.\n  // Si la DJ ya venció con la documentación en el estudio, la clave cambia\n  // para que el equipo reciba una alerta nueva aunque el nivel siga siendo URGENTE_INTERNO.\n  const vencTexto = new Date(fechaVencUTC).toISOString().slice(0, 10);\n  const sufijo = (nivelAlerta === 'URGENTE_INTERNO' && diasRestantes < 0) ? '_VENCIDA' : '';\n  const claveActual = `${nivelAlerta}${sufijo} ${vencTexto}`;\n\n  const ultimoAvisoUTC = parsearFecha(data.Ultimo_Aviso);\n  const diasDesdeAviso = ultimoAvisoUTC === null ? null : Math.round((hoyUTC - ultimoAvisoUTC) / 86400000);\n\n  let debeAvisar = false;\n  if (NIVELES_CON_AVISO.includes(nivelAlerta)) {\n    if (diasDesdeAviso === null) debeAvisar = true;\n    else if (diasDesdeAviso <= 0) debeAvisar = false;\n    else if (String(data.Aviso_Registrado || '') !== claveActual) debeAvisar = true;\n    else if (REPETIR_CADA_DIAS[nivelAlerta] && diasDesdeAviso >= REPETIR_CADA_DIAS[nivelAlerta]) debeAvisar = true;\n  }\n\n  return {\n    json: {\n      ...data,\n      Dias_Restantes: diasRestantes,\n      Nivel_Alerta: nivelAlerta,\n      Accion_Sugerida: accionSugerida,\n      Debe_Avisar: debeAvisar,\n      Ultimo_Aviso: debeAvisar ? hoyTexto : (data.Ultimo_Aviso ?? ''),\n      Aviso_Registrado: debeAvisar ? claveActual : (data.Aviso_Registrado ?? ''),\n      Fecha_Proceso: $now.toISO()\n    }\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1072,
+        -80
+      ],
+      "id": "dd30e4db-676f-42c3-9939-3646c5a0c76c",
+      "name": "Calcular el Riesgo Fiscal"
+    },
+    {
+      "parameters": {
+        "batchSize": 5,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1568,
+        208
+      ],
+      "id": "6e1662d0-d1fe-416e-a7d5-76afa23d25c6",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "amount": 2
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1824,
+        224
+      ],
+      "id": "e1b4d24b-7a29-4a13-9479-13e5807acec4",
+      "name": "Wait",
+      "webhookId": "d7d90877-7d6b-4028-b4f3-a31d344499c8"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.Nivel_Alerta }}",
+                    "rightValue": "^(VENCIDO|CRITICO)$",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    },
+                    "id": "fa734565-da8c-4940-af01-8222b1fb5061"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Critico_o_Vencido"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "a0241ce6-d0e0-42d8-b66f-6a7ef9b506b5",
+                    "leftValue": "={{ $json.Nivel_Alerta }}",
+                    "rightValue": "URGENTE_INTERNO",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Urgente_Interno"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "a611d32e-8835-4fbf-a271-d25760f29c64",
+                    "leftValue": "={{ $json.Nivel_Alerta }}",
+                    "rightValue": "PREVENTIVO",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Preventivo"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "13994600-798d-4a7d-b197-3dbb91fdfd8f",
+                    "leftValue": "={{ $json.Nivel_Alerta }}",
+                    "rightValue": "NORMAL",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Normal"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        2032,
+        192
+      ],
+      "id": "f4ebeb95-dbb7-4f82-9799-313046b65fdf",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c94f2857-600e-4c02-a97f-f8ab89069064",
+              "name": "Canal_Destino",
+              "value": "INTERNO",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        2304,
+        208
+      ],
+      "id": "519c3d7f-73d6-4b40-9159-2c326a5f1a18",
+      "name": "Canal Interno"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f9e4be52-aecd-4c87-8095-de795c2605a8",
+              "name": "Canal_Destino",
+              "value": "CLIENTE",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        2304,
+        384
+      ],
+      "id": "aa350cbc-6eee-4ad1-986d-45b61d5034db",
+      "name": "Canal Cliente"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "24b4cc75-1647-4651-8074-5d405449772d",
+              "name": "Canal_Destino",
+              "value": "AMBOS",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        2304,
+        16
+      ],
+      "id": "09fce38f-ab22-45a0-8ea5-3cedb84a2293",
+      "name": "Canal Ambos"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "RfeT1MWXoN0V1jJa",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/RfeT1MWXoN0V1jJa",
+          "cachedResultName": "Módulo 3 - Subworkflow Comunicaciones y monitoreo"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Razon_Social": "={{ $json.Razon_Social }}",
+            "Email_Cliente": "={{ $json.Email_Cliente }}",
+            "Nivel_Alerta": "={{ $json.Nivel_Alerta }}",
+            "Dias_Restantes": "={{ $json.Dias_Restantes }}",
+            "Impuestos_A_Liquidar": "={{ $json.Impuestos_A_Liquidar }}",
+            "Consultor": "={{ $json.Consultor }}",
+            "Canal_Destino": "={{ $json.Canal_Destino }}",
+            "Origen": "Motor de vencimientos"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Razon_Social",
+              "displayName": "Razon_Social",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "Email_Cliente",
+              "displayName": "Email_Cliente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "Nivel_Alerta",
+              "displayName": "Nivel_Alerta",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "Dias_Restantes",
+              "displayName": "Dias_Restantes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number",
+              "removed": false
+            },
+            {
+              "id": "Impuestos_A_Liquidar",
+              "displayName": "Impuestos_A_Liquidar",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "Consultor",
+              "displayName": "Consultor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "Canal_Destino",
+              "displayName": "Canal_Destino",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "Origen",
+              "displayName": "Origen",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.4,
+      "position": [
+        2560,
+        208
+      ],
+      "id": "5cfc4e90-e412-43cd-859a-497cb4ec6ee8",
+      "name": "Llamar al modulo 3"
+    },
+    {
+      "parameters": {
+        "jsCode": "function parsearFecha(valor) {\n  if (valor === undefined || valor === null || valor === '') return null;\n  if (typeof valor === 'number') return Date.UTC(1899, 11, 30) + Math.round(valor) * 86400000;\n  const t = String(valor).trim();\n  let m = t.match(/^(\\d{1,2})\\/(\\d{1,2})\\/(\\d{4})/);\n  if (m) return Date.UTC(+m[3], +m[2] - 1, +m[1]);\n  m = t.match(/^(\\d{4})-(\\d{1,2})-(\\d{1,2})/);\n  if (m) return Date.UTC(+m[1], +m[2] - 1, +m[3]);\n  return null;\n}\n\nconst vigentes = $input.all().filter(item => {\n  const f = parsearFecha(item.json.Fecha_Vencimiento);\n  if (f === null) return false;\n  const d = new Date(f);\n  return d.getUTCFullYear() === $now.year && d.getUTCMonth() + 1 === $now.month;\n});\n\nif (vigentes.length === 0) {\n  throw new Error(`No hay vencimientos cargados en Calendario_Fiscal para ${$now.toFormat('MM/yyyy')}`);\n}\nreturn vigentes;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        640,
+        48
+      ],
+      "id": "1f6ee3b7-a2e6-4be1-81f1-309994640b96",
+      "name": "Filtrar Mes Vigente"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "37f45b06-aaf5-459f-a748-d2679e25e865",
+              "leftValue": "={{ $json.Debe_Avisar }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1312,
+        240
+      ],
+      "id": "7227068e-a2cf-4000-9ef6-355a6e362915",
+      "name": "Debe avisar?"
+    },
+    {
+      "parameters": {
+        "content": "## 📅 Vencimientos\n\nEste flujo **lee la cartera de clientes y el calendario fiscal**, calcula cuántos días faltan para cada vencimiento, **clasifica el riesgo** y envía los avisos que correspondan al cliente y al equipo.\n\n🎯 **¿Para qué sirve?** Para que ningún vencimiento se pase por falta de seguimiento, y para que los clientes MCP (el agente de Telegram y Claude) consulten el estado actualizado de cada cliente.\n\n▶️ **¿Cómo se ejecuta?** Solo, todos los días a las **08:30** (hora de Montevideo), o a pedido llamando al Webhook con la clave `x-api-key`.\n\n📋 **Orden del proceso:** 1) Disparadores → 2) Leer y cruzar datos → 3) Calcular riesgo → 4) Filtrar y procesar por lotes → 5) Enrutar y enviar avisos",
+        "height": 208,
+        "width": 2736
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -32,
+        -576
+      ],
+      "id": "3c29961e-7346-4771-b4b2-bf0921f0a275",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "### ▶️ Paso 1: Disparadores\n\nDos formas de iniciar el flujo:\n- **Schedule Trigger:** todos los días a las 08:30.\n- **Webhook:** ejecución a pedido. Exige el header `x-api-key`; sin él responde **403**.\n\n💡 Ambos disparan exactamente el mismo proceso.",
+        "height": 880,
+        "width": 368,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -32,
+        -368
+      ],
+      "id": "d74328a1-d1e9-49cd-be5d-074fbb31170d",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "### 📥 Paso 2: Leer y cruzar los datos\n\nLee en paralelo la **cartera de clientes** y el **calendario fiscal**.\n\n**Filtrar Mes Vigente** se queda solo con las fechas del mes en curso, así el calendario puede tener el año completo.\n\n**Merge** une a cada cliente con la fecha de vencimiento de su **régimen** (CEDE, NO_CEDE, etc.). Los impuestos a liquidar se toman de la cartera, porque dependen de cada cliente.\n\n⚠️ Si el mes no tiene fechas cargadas, el flujo se detiene y llega una alerta técnica.\n\n⚠️ Un cliente cuyo régimen no tenga fecha este mes queda fuera del cruce (limitación documentada en el README).",
+        "height": 896,
+        "width": 624,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        336,
+        -368
+      ],
+      "id": "8867bb23-6a74-42ca-8191-1b43172d17ac",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "### 🧮 Paso 3: Calcular el riesgo fiscal\n\nPara cada cliente calcula los **días restantes**, el **nivel de alerta** y la **acción sugerida**:\nVENCIDO · CRITICO · URGENTE_INTERNO · PREVENTIVO · NORMAL · COMPLETADO\n\nTambién decide si **corresponde avisar** (`Debe_Avisar`):\n- nunca más de un aviso por día al mismo cliente;\n- un aviso por nivel y vencimiento: si el nivel cambia, se vuelve a avisar;\n- si la DJ vence con la documentación en el estudio, el equipo recibe una alerta nueva;\n- los VENCIDO con documentación pendiente se repiten cada 3 días.\n\nEn paralelo, **Actualizar Cartera Clientes** guarda el resultado y el registro del aviso en la planilla, para que los clientes MCP lo puedan consultar. El aviso queda registrado antes del envío.\n\n💡 Al cliente solo se le escribe cuando falta su documentación.",
+        "height": 448,
+        "width": 1008,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        960,
+        -368
+      ],
+      "id": "e680015c-4d7d-48a0-84e2-039d09278bda",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "### 🔁 Paso 4: Filtrar y procesar por lotes\n\n**Debe avisar?** deja pasar solo a los clientes que necesitan un aviso hoy.\n\n**Loop Over Items** los procesa en **lotes de 5**, con una pausa de **2 segundos** (Wait) entre lotes para no saturar Gmail y Telegram.",
+        "height": 448,
+        "width": 1008,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        960,
+        80
+      ],
+      "id": "d204e55e-9522-4e4a-a8b8-4ec97b674769",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "### 📨 Paso 5: Enrutar y enviar los avisos\n\nEl **Switch** elige el canal según el nivel de alerta:\n- 🔴 VENCIDO o CRITICO → **Canal Ambos** (email + Telegram)\n- 🟠 URGENTE_INTERNO → **Canal Interno** (solo Telegram)\n- 🟡 PREVENTIVO → **Canal Cliente** (solo email)\n- ⚪ NORMAL → vuelve al bucle. Es una red de seguridad: en la práctica no recibe clientes, porque *Debe avisar?* ya los descartó.\n\n**Llamar al modulo 3** ejecuta el sub-workflow de comunicaciones con origen *Motor de vencimientos* y vuelve al bucle hasta terminar con todos los clientes.\n\n⚠️ Si un envío falla, la corrida se detiene y llega una alerta técnica (limitación documentada en el README).",
+        "height": 896,
+        "width": 736,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1968,
+        -368
+      ],
+      "id": "dc9809ec-9c73-4f49-900f-9a2b71be59b1",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "### ⚠️ Antes de ejecutar: credenciales necesarias\n\n- 🔑 **Google Sheets (OAuth2):** leer y actualizar la cartera y el calendario.\n- 🔑 **Header Auth (`x-api-key`):** protege el Webhook.\n- 🔗 **Módulo 3** guardado y publicado.\n\n⚙️ Settings: Error Workflow = Módulo 3 · Timezone = America/Montevideo.",
+        "height": 272,
+        "width": 368,
+        "color": "#9C3A3A"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -32,
+        256
+      ],
+      "id": "8fcde76d-4b93-4728-9f2c-38e82f59a8de",
+      "name": "Sticky Note6"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Leer Cartera Clientes",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Leer Calendario Fiscal",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Leer Cartera Clientes",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Leer Calendario Fiscal",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leer Cartera Clientes": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leer Calendario Fiscal": {
+      "main": [
+        [
+          {
+            "node": "Filtrar Mes Vigente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Calcular el Riesgo Fiscal",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calcular el Riesgo Fiscal": {
+      "main": [
+        [
+          {
+            "node": "Debe avisar?",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Actualizar Cartera Clientes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Canal Ambos",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Canal Interno",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Canal Cliente",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Canal Interno": {
+      "main": [
+        [
+          {
+            "node": "Llamar al modulo 3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Canal Ambos": {
+      "main": [
+        [
+          {
+            "node": "Llamar al modulo 3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Canal Cliente": {
+      "main": [
+        [
+          {
+            "node": "Llamar al modulo 3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Llamar al modulo 3": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filtrar Mes Vigente": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Debe avisar?": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": true,
+    "timeSavedMode": "fixed",
+    "errorWorkflow": "RfeT1MWXoN0V1jJa",
+    "callerPolicy": "workflowsFromSameOwner",
+    "timezone": "America/Montevideo"
+  },
+  "versionId": "acd92495-09e1-4762-8ce2-6dc5b2137f2b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "51d9ef5f9325bde941666f96ee2329ba347896138327a33c5629fba04ceee4ef"
+  },
+  "nodeGroups": [],
+  "id": "jCuNqhW4Wp52ootT",
+  "tags": []
+}

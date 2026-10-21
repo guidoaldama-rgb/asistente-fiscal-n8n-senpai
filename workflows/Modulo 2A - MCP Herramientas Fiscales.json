@@ -1,0 +1,686 @@
+{
+  "name": "Modulo 2A - MCP Herramientas Fiscales",
+  "nodes": [
+    {
+      "parameters": {
+        "authentication": "headerAuth",
+        "path": "mcp-estudio-fiscal"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 2.1,
+      "position": [
+        144,
+        32
+      ],
+      "id": "298918bc-dcb2-4b6e-ba3f-1549e75cc4b5",
+      "name": "MCP Server Trigger",
+      "webhookId": "bb164498-900d-45ee-89bd-85b11c99372e",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "WMER0DnbGgnrYLHg",
+          "name": "Header Auth account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "   Cambia el estado de la documentación (Estado_Doc) de un cliente. Valores permitidos, exactamente: Pendiente, Recibida o Validada. Usala cuando el contador indique que el cliente entregó sus documentos (Recibida), que fueron revisados (Validada) o que hay que volver a pedirlos, por ejemplo al comenzar un nuevo período (Pendiente). Antes de usarla, consulta la cartera para obtener el ID del cliente.",
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1iTWS_Ypj_WH_afF1LJqNtWBiD8wlQH2CTJLffkCZRJw",
+          "mode": "list",
+          "cachedResultName": "BD_Estudio_Contable_n8n",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iTWS_Ypj_WH_afF1LJqNtWBiD8wlQH2CTJLffkCZRJw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Cartera_clientes",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iTWS_Ypj_WH_afF1LJqNtWBiD8wlQH2CTJLffkCZRJw/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Estado_Doc": "={{ $fromAI(\"Estado_Doc\", \"Nuevo estado de la documentación. Solo se permite Pendiente, Recibida o Validada\", \"string\") }}",
+            "ID": "={{ $fromAI(\"ID\", \"ID numérico del cliente, tomado de la cartera\", \"number\") }}"
+          },
+          "matchingColumns": [
+            "ID"
+          ],
+          "schema": [
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Razon_Social",
+              "displayName": "Razon_Social",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "RUT",
+              "displayName": "RUT",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ultimo_Digito",
+              "displayName": "Ultimo_Digito",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Regimen",
+              "displayName": "Regimen",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Email_Cliente",
+              "displayName": "Email_Cliente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Telegram_ID",
+              "displayName": "Telegram_ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Estado_Doc",
+              "displayName": "Estado_Doc",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Estado_DJ",
+              "displayName": "Estado_DJ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Consultor",
+              "displayName": "Consultor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Fecha_Vencimiento",
+              "displayName": "Fecha_Vencimiento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Dias_Restantes",
+              "displayName": "Dias_Restantes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Nivel_Alerta",
+              "displayName": "Nivel_Alerta",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Accion_Sugerida",
+              "displayName": "Accion_Sugerida",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Impuestos_A_Liquidar",
+              "displayName": "Impuestos_A_Liquidar",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        176,
+        288
+      ],
+      "id": "ab52c688-7238-42da-b503-a99dda0403fe",
+      "name": "Registrar recepcion de documentos",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "mH0PacnOnaIfc855",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Consulta la lista completa de clientes del estudio contable: Razon_Social, RUT, Regimen (CEDE, NO_CEDE, PEQUENA_EMPRESA), Email_Cliente, Estado_Doc (Pendiente, Recibida, Validada), Estado_DJ, Consultor, Fecha_Vencimiento, Dias_Restantes, Nivel_Alerta (VENCIDO, CRITICO, URGENTE_INTERNO, PREVENTIVO, NORMAL, COMPLETADO), Accion_Sugerida e Impuestos_A_Liquidar. Los días restantes corresponden a la última ejecución de vencimientos.",
+        "documentId": {
+          "__rl": true,
+          "value": "1iTWS_Ypj_WH_afF1LJqNtWBiD8wlQH2CTJLffkCZRJw",
+          "mode": "list",
+          "cachedResultName": "BD_Estudio_Contable_n8n",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iTWS_Ypj_WH_afF1LJqNtWBiD8wlQH2CTJLffkCZRJw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Cartera_clientes",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iTWS_Ypj_WH_afF1LJqNtWBiD8wlQH2CTJLffkCZRJw/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": []
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        0,
+        288
+      ],
+      "id": "0f82a5d1-5168-4698-b047-51445fea97f4",
+      "name": "Consultar Estado Cartera Clientes",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "mH0PacnOnaIfc855",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "description": "  Envía un recordatorio por correo a un cliente de la cartera. Recibe únicamente el ID del cliente; el correo y los demás datos se toman de la cartera automáticamente, y el modelo no puede elegir ni cambiar el destinatario. Solo envía si el cliente existe, su DJ no está presentada y su documentación está pendiente. Devuelve un texto que indica si el envío se realizó o, si fue rechazado, el motivo exacto.",
+        "workflowId": {
+          "__rl": true,
+          "value": "ZYGfXkWfH1tuKJD2",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/ZYGfXkWfH1tuKJD2",
+          "cachedResultName": "Herramienta - Recordatorio Manual por ID"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ID": "={{ $fromAI(\"ID\", \"ID numérico del cliente, tomado de la cartera\", \"number\") }}"
+          },
+          "matchingColumns": [
+            "ID"
+          ],
+          "schema": [
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        784,
+        448
+      ],
+      "id": "def524ad-4c40-4633-943c-5a548f9530a6",
+      "name": "Enviar Recordatorio"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "   Cambia el estado de la declaración jurada (Estado_DJ) de un cliente. Valores permitidos, exactamente: No_Presentada, En_Borrador o Presentada. Usala cuando el contador indique que la DJ está en borrador, que fue presentada, o que hay que volverla a No_Presentada al comenzar un nuevo período. Antes de usarla, consulta la cartera para obtener el ID del cliente.",
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1iTWS_Ypj_WH_afF1LJqNtWBiD8wlQH2CTJLffkCZRJw",
+          "mode": "list",
+          "cachedResultName": "BD_Estudio_Contable_n8n",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iTWS_Ypj_WH_afF1LJqNtWBiD8wlQH2CTJLffkCZRJw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Cartera_clientes",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iTWS_Ypj_WH_afF1LJqNtWBiD8wlQH2CTJLffkCZRJw/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ID": "={{ $fromAI(\"ID\", \"ID numérico del cliente, tomado de la cartera\", \"number\") }}",
+            "Estado_DJ": "={{ $fromAI(\"Estado_DJ\", \"Nuevo estado de la declaración jurada. Solo se permite exactamente: No_Presentada, En_Borrador o Presentada\", \"string\") }}"
+          },
+          "matchingColumns": [
+            "ID"
+          ],
+          "schema": [
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Razon_Social",
+              "displayName": "Razon_Social",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "RUT",
+              "displayName": "RUT",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ultimo_Digito",
+              "displayName": "Ultimo_Digito",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Regimen",
+              "displayName": "Regimen",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Email_Cliente",
+              "displayName": "Email_Cliente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Telegram_ID",
+              "displayName": "Telegram_ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Estado_Doc",
+              "displayName": "Estado_Doc",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Estado_DJ",
+              "displayName": "Estado_DJ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Consultor",
+              "displayName": "Consultor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Fecha_Vencimiento",
+              "displayName": "Fecha_Vencimiento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Dias_Restantes",
+              "displayName": "Dias_Restantes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Nivel_Alerta",
+              "displayName": "Nivel_Alerta",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Accion_Sugerida",
+              "displayName": "Accion_Sugerida",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Impuestos_A_Liquidar",
+              "displayName": "Impuestos_A_Liquidar",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        352,
+        288
+      ],
+      "id": "6bf9cadd-e0c4-4b2b-ad28-86beaeef8b71",
+      "name": "Registrar Estado DJ",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "mH0PacnOnaIfc855",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## 🧰 Servidor MCP: Herramientas Fiscales\n\nEste flujo es un **servidor MCP** que expone 4 herramientas para **consultar y actualizar la cartera** de forma controlada.\n\n🎯 **¿Para qué sirve?** Le da acceso a los datos a cualquier cliente compatible con MCP, pero solo para las acciones que definimos.\n\n▶️ **¿Cómo se ejecuta?** Siempre activo para que el servidor responda. Lo usan dos clientes: el **MCP Client** del Modulo 2B (agente de Telegram), con la clave `x-api-key`, y **Claude**, conectado como conector personalizado con la autorización OAuth de n8n.\n\n🔒 Las restricciones están dentro de las herramientas, así que sirven para cualquier cliente.\n",
+        "height": 176,
+        "width": 976
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -320,
+        -240
+      ],
+      "id": "ae09de5b-8e42-4d21-91af-9e586fc3564e",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "### 🔌 Paso 1: Servidor MCP\n\nRecibe los pedidos de los clientes MCP (agente de Telegram o Claude) y les indica qué herramientas tienen disponibles.\n\n🔒 Sin autenticación no responde (403). El agente de Telegram usa la clave **Header Auth** (`x-api-key`); Claude usa la autorización OAuth de n8n, con permisos solo de lectura y ejecución de workflows.",
+        "height": 192,
+        "width": 976,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -320,
+        -64
+      ],
+      "id": "91c9d0ad-75a8-4f8a-a505-b504d7037524",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n### 🔍 Paso 2: Herramienta de consulta\n\n**Consultar Estado Cartera Clientes** lee la cartera completa: estados, días restantes, nivel de alerta y consultor.\n\n✅ Solo lectura.",
+        "height": 400,
+        "width": 448,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -320,
+        128
+      ],
+      "id": "52ab3d4d-47f5-4cc0-b582-9ede6bc87903",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n### ✏️ Paso 3: Herramientas de actualización\n\n- **Registrar recepcion de documentos:** cambia `Estado_Doc` a Pendiente, Recibida o Validada. Volver a Pendiente sirve, por ejemplo, para reiniciar un nuevo período.\n- **Registrar Estado DJ:** cambia `Estado_DJ` a No_Presentada, En_Borrador o Presentada.\n\n🔒 Buscan al cliente por **ID** y solo pueden escribir **esa columna**. El resto de la cartera está protegido.\n\n⚠️ Los valores permitidos se indican en la descripción que lee el modelo, pero el servidor todavía no los valida (limitación documentada en el README).",
+        "height": 560,
+        "width": 528,
+        "color": "#C2DDEB"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        128,
+        128
+      ],
+      "id": "b32c0b30-07f8-4ad4-b03c-f57631827375",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "### 📧 Paso 4: Herramienta de envío\n\n**Enviar Recordatorio** recibe **solo el ID** del cliente y llama a *Herramienta - Recordatorio Manual por ID*, que valida que el cliente exista, que su DJ no esté presentada y que su documentación esté pendiente.\n\n🔒 Ningún cliente MCP **puede elegir el destinatario**: el correo se toma de la cartera.",
+        "height": 560,
+        "width": 336,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        656,
+        128
+      ],
+      "id": "8ee7eab2-b3eb-4348-a92f-644df6223fa2",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "### ⚠️ Antes de ejecutar: credenciales necesarias\n\n- 🔑 **Google Sheets (OAuth2):** leer y actualizar la cartera.\n- 🔑 **Header Auth (`x-api-key`):** protege el servidor MCP.\n\n⚠️ El workflow debe estar **activo** para que los clientes MCP lo encuentren.",
+        "width": 448,
+        "color": "#9D0B0B"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -320,
+        528
+      ],
+      "id": "c1c6e19e-1d9f-4cc6-ae46-8d4ae2825f6f",
+      "name": "Sticky Note5"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Registrar recepcion de documentos": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consultar Estado Cartera Clientes": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar Recordatorio": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registrar Estado DJ": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": true,
+    "timeSavedMode": "fixed",
+    "errorWorkflow": "RfeT1MWXoN0V1jJa",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "f08c690f-5650-4784-9020-4d5277f3af62",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "51d9ef5f9325bde941666f96ee2329ba347896138327a33c5629fba04ceee4ef"
+  },
+  "nodeGroups": [],
+  "id": "XIpEkbKlfFtj84aQ",
+  "tags": []
+}

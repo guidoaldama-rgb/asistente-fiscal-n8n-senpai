@@ -1,0 +1,783 @@
+{
+  "name": "Módulo 3 - Subworkflow Comunicaciones y monitoreo",
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "e0eab58e-b55e-4912-bbfa-6bbfce825663",
+              "leftValue": "={{ $json.Canal_Destino }}",
+              "rightValue": "AMBOS",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "d193b2f1-82bb-4ab0-84f4-1d805e416b81",
+              "leftValue": "={{ $json.Canal_Destino }}",
+              "rightValue": "INTERNO",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        256,
+        160
+      ],
+      "id": "b3dfbeae-cf95-445b-b402-a71d39ec52b7",
+      "name": "Notificar al equipo"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "5a1bb066-2953-4082-aa75-6dfe9b698fa5",
+              "leftValue": "={{ $json.Canal_Destino }}",
+              "rightValue": "AMBOS",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "ec0e1203-0146-44f9-8cb1-e859018a667c",
+              "leftValue": "={{ $json.Canal_Destino }}",
+              "rightValue": "CLIENTE",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        240,
+        -32
+      ],
+      "id": "d5fef982-816e-4cd0-a86d-77ee589b7fb5",
+      "name": "¿Enviar mail al Cliente?"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "Razon_Social"
+            },
+            {
+              "name": "Email_Cliente"
+            },
+            {
+              "name": "Nivel_Alerta"
+            },
+            {
+              "name": "Dias_Restantes",
+              "type": "number"
+            },
+            {
+              "name": "Impuestos_A_Liquidar"
+            },
+            {
+              "name": "Consultor"
+            },
+            {
+              "name": "Canal_Destino"
+            },
+            {
+              "name": "Origen"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -48,
+        176
+      ],
+      "id": "2cf46638-8ec8-43db-8aa0-2c04921e2d8f",
+      "name": "Execute Workflow Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1iTWS_Ypj_WH_afF1LJqNtWBiD8wlQH2CTJLffkCZRJw",
+          "mode": "list",
+          "cachedResultName": "BD_Estudio_Contable_n8n",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iTWS_Ypj_WH_afF1LJqNtWBiD8wlQH2CTJLffkCZRJw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 730401607,
+          "mode": "list",
+          "cachedResultName": "Panel_Monitoreo_Logs",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iTWS_Ypj_WH_afF1LJqNtWBiD8wlQH2CTJLffkCZRJw/edit#gid=730401607"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Fecha_Hora": "={{ $now.toFormat('yyyy-MM-dd HH:mm:ss') }}",
+            "Cliente": "={{ $('Execute Workflow Trigger').item.json.Razon_Social }}",
+            "Nivel_Alerta": "={{ $('Execute Workflow Trigger').item.json.Nivel_Alerta }}",
+            "Accion_Ejecutada": "Email enviado al cliente",
+            "Estado_Ejecucion": "EXITOSO",
+            "Origen": "={{ $('Execute Workflow Trigger').item.json.Origen || 'Sin especificar' }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Fecha_Hora",
+              "displayName": "Fecha_Hora",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Origen",
+              "displayName": "Origen",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Cliente",
+              "displayName": "Cliente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Nivel_Alerta",
+              "displayName": "Nivel_Alerta",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Accion_Ejecutada",
+              "displayName": "Accion_Ejecutada",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Estado_Ejecucion",
+              "displayName": "Estado_Ejecucion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        928,
+        -48
+      ],
+      "id": "512f2e99-0da6-4899-a815-1b1adc1bb0b7",
+      "name": "Log mail",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "mH0PacnOnaIfc855",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1iTWS_Ypj_WH_afF1LJqNtWBiD8wlQH2CTJLffkCZRJw",
+          "mode": "list",
+          "cachedResultName": "BD_Estudio_Contable_n8n",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iTWS_Ypj_WH_afF1LJqNtWBiD8wlQH2CTJLffkCZRJw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 730401607,
+          "mode": "list",
+          "cachedResultName": "Panel_Monitoreo_Logs",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iTWS_Ypj_WH_afF1LJqNtWBiD8wlQH2CTJLffkCZRJw/edit#gid=730401607"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Fecha_Hora": "={{ $now.toFormat('yyyy-MM-dd HH:mm:ss') }}",
+            "Cliente": "={{ $('Execute Workflow Trigger').item.json.Razon_Social }}",
+            "Nivel_Alerta": "={{ $('Execute Workflow Trigger').item.json.Nivel_Alerta }}",
+            "Accion_Ejecutada": "Alerta interna enviada por Telegram",
+            "Estado_Ejecucion": "EXITOSO",
+            "Origen": "={{ $('Execute Workflow Trigger').item.json.Origen || 'Sin especificar' }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Fecha_Hora",
+              "displayName": "Fecha_Hora",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Origen",
+              "displayName": "Origen",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Cliente",
+              "displayName": "Cliente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Nivel_Alerta",
+              "displayName": "Nivel_Alerta",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Accion_Ejecutada",
+              "displayName": "Accion_Ejecutada",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Estado_Ejecucion",
+              "displayName": "Estado_Ejecucion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        928,
+        144
+      ],
+      "id": "40371765-9601-4377-bcb7-e231c3ca2dda",
+      "name": "Log Telegram",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "mH0PacnOnaIfc855",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        240,
+        448
+      ],
+      "id": "f321c78a-cc97-406b-8ea7-6ac84919be4b",
+      "name": "Error Trigger"
+    },
+    {
+      "parameters": {
+        "chatId": "7978085144",
+        "text": "=⚠️ ALERTA TÉCNICA: Falló el workflow \"{{ String($json.workflow.name).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;') }}\" en el nodo \"{{ String($json.execution.lastNodeExecuted).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;') }}\". Error: {{ String($json.execution.error.message).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;') }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        720,
+        448
+      ],
+      "id": "c633d936-c374-4f54-a394-69f8d1535c43",
+      "name": "Alerta técnica Telegram",
+      "webhookId": "df969a44-f851-4f8c-b0cd-ca17ee020857",
+      "credentials": {
+        "telegramApi": {
+          "id": "6Sw0G6Jc0lw6mear",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1iTWS_Ypj_WH_afF1LJqNtWBiD8wlQH2CTJLffkCZRJw",
+          "mode": "list",
+          "cachedResultName": "BD_Estudio_Contable_n8n",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iTWS_Ypj_WH_afF1LJqNtWBiD8wlQH2CTJLffkCZRJw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 730401607,
+          "mode": "list",
+          "cachedResultName": "Panel_Monitoreo_Logs",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iTWS_Ypj_WH_afF1LJqNtWBiD8wlQH2CTJLffkCZRJw/edit#gid=730401607"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Fecha_Hora": "={{ $now.toFormat('yyyy-MM-dd HH:mm:ss') }}",
+            "Origen": "{{ $('Error Trigger').item.json.workflow.name }}",
+            "Cliente": "N/A (Fallo de Sistema)",
+            "Nivel_Alerta": "ERROR_CRITICO",
+            "Accion_Ejecutada": "=Fallo en nodo: {{ $('Error Trigger').item.json.execution.lastNodeExecuted }}",
+            "Estado_Ejecucion": "=ERROR: {{ $('Error Trigger').item.json.execution.error.message }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Fecha_Hora",
+              "displayName": "Fecha_Hora",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Origen",
+              "displayName": "Origen",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Cliente",
+              "displayName": "Cliente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Nivel_Alerta",
+              "displayName": "Nivel_Alerta",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Accion_Ejecutada",
+              "displayName": "Accion_Ejecutada",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Estado_Ejecucion",
+              "displayName": "Estado_Ejecucion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        944,
+        448
+      ],
+      "id": "782c2833-12f2-42ef-a1be-f749f813f3ff",
+      "name": "Log Error",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "mH0PacnOnaIfc855",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const d = $json;\nconst esc = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');\nconst n = Number(d.Dias_Restantes);\n\nfunction plazo(dias) {\n  if (dias < 0) return `venció hace ${Math.abs(dias)} día${Math.abs(dias) === 1 ? '' : 's'}`;\n  if (dias === 0) return 'vence hoy';\n  if (dias === 1) return 'vence mañana';\n  return `vence en ${dias} días`;\n}\n\nconst rs = esc(d.Razon_Social);\nconst imp = esc(d.Impuestos_A_Liquidar);\nconst cons = esc(d.Consultor);\nlet asunto, cuerpo;\n\nif (d.Nivel_Alerta === 'VENCIDO') {\n  asunto = `URGENTE: vencimiento fiscal vencido - ${d.Razon_Social}`;\n  cuerpo = `<p>Estimados <b>${rs}</b>:</p>\n<p>El vencimiento para liquidar <b>${imp}</b> ${plazo(n)} y todavía no recibimos su documentación.</p>\n<p>Cada día de atraso puede generar <b>multas y recargos</b>. Les pedimos enviar hoy mismo las facturas de compras y ventas del período a su consultor, ${cons}, para regularizar la situación cuanto antes.</p>`;\n} else if (d.Nivel_Alerta === 'CRITICO') {\n  asunto = `Atención: su vencimiento fiscal ${plazo(n)} - ${d.Razon_Social}`;\n  cuerpo = `<p>Estimados <b>${rs}</b>:</p>\n<p>Su vencimiento para liquidar <b>${imp}</b> <b>${plazo(n)}</b> y aún tenemos documentación pendiente.</p>\n<p>Para presentar en fecha necesitamos recibirla a la brevedad. Pueden enviarla a su consultor, ${cons}.</p>`;\n} else if (d.Nivel_Alerta === 'PREVENTIVO') {\n  asunto = `Recordatorio: próximo vencimiento fiscal - ${d.Razon_Social}`;\n  cuerpo = `<p>Estimados <b>${rs}</b>:</p>\n<p>Les recordamos que su vencimiento para liquidar <b>${imp}</b> ${plazo(n)}.</p>\n<p>Para preparar la declaración con tiempo, les agradecemos enviar las facturas de compras y ventas del período a su consultor, ${cons}.</p>`;\n} else {\n  asunto = `Recordatorio de vencimiento fiscal - ${d.Razon_Social}`;\n  cuerpo = `<p>Estimados <b>${rs}</b>:</p>\n<p>Les recordamos que su vencimiento para liquidar <b>${imp}</b> ${plazo(n)}.</p>\n<p>Ante cualquier consulta, pueden comunicarse con su consultor, ${cons}.</p>`;\n}\n\ncuerpo += `<p>Saludos cordiales,<br>${cons}<br>Departamento de Impuestos</p>`;\nreturn { json: { ...d, Asunto: asunto, Cuerpo: cuerpo } };"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        496,
+        -48
+      ],
+      "id": "7007740c-e5db-4bae-b945-a0e6e8d2057d",
+      "name": "Armar mensaje"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.Email_Cliente }}",
+        "subject": "={{ $json.Asunto }}",
+        "message": "={{ $json.Cuerpo }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        720,
+        -48
+      ],
+      "id": "f058d246-7d1c-46b8-9b31-3f55482ce6b0",
+      "name": "Mail a cliente",
+      "webhookId": "1e68f20a-d8ec-4075-ac7d-fb58a1999bf2",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "JytLZ0bse7udoIoX",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "7978085144",
+        "text": "=🚨 ALERTA FISCAL [{{ $('Execute Workflow Trigger').item.json.Nivel_Alerta }}]\n🏢 Cliente: {{ String($('Execute Workflow Trigger').item.json.Razon_Social).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;') }}\n⏳ Días restantes: {{ $('Execute Workflow Trigger').item.json.Dias_Restantes }}\n👤 Consultor: {{ String($('Execute Workflow Trigger').item.json.Consultor).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;') }}\n📌 Acción: Revisar estado y gestionar cierre de DJ ({{ String($('Execute Workflow Trigger').item.json.Impuestos_A_Liquidar).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;') }}).",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        720,
+        144
+      ],
+      "id": "214a3eee-d904-43a6-8129-53f73d3e6d47",
+      "name": "Telegram interno",
+      "webhookId": "df969a44-f851-4f8c-b0cd-ca17ee020857",
+      "credentials": {
+        "telegramApi": {
+          "id": "6Sw0G6Jc0lw6mear",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## 📬 Comunicaciones, Auditoría y Errores\n\nEste sub-workflow **envía los avisos** (email al cliente y Telegram al equipo), **registra cada envío** en el panel de monitoreo y **alerta cualquier error** del sistema.\n\n🎯 **¿Para qué sirve?** Centraliza los envíos para que el motor de vencimientos y los recordatorios manuales de los clientes MCP usen la misma lógica, sin duplicar nodos.\n\n▶️ **¿Cómo se ejecuta?** Lo llaman el *Modulo 1* y la *Herramienta - Recordatorio Manual por ID*. El Error Trigger se dispara solo cuando falla otro workflow.\n\n📋 **Cómo está organizado:** 1) Recibir datos → 2) Email al cliente y 3) Alerta al equipo, en paralelo según el canal. 4) Monitor de errores, como flujo independiente.",
+        "height": 176,
+        "width": 1728
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        -272
+      ],
+      "id": "4dcbbf38-b205-441d-81a0-3f6db9a3f4c4",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "### 📥 Paso 1: Recibir los datos\n\nRecibe los datos del cliente, el **Canal_Destino** y el **Origen** del envío.\n\nCanal_Destino:\n- `AMBOS` → email + Telegram\n- `CLIENTE` → solo email\n- `INTERNO` → solo Telegram\n\nOrigen:\n- `Motor de vencimientos` (Modulo 1)\n- `Recordatorio manual` (Herramienta)",
+        "height": 656,
+        "width": 336,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        -96
+      ],
+      "id": "0b46ea91-c5c6-4903-a8f9-fdb83e9260ef",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n**¿Enviar mail al Cliente?** deja pasar los canales AMBOS y CLIENTE.\n\n**Armar mensaje** redacta un texto distinto según el nivel del cliente:\n🔴 Vencido · 🟠 Crítico · 🟡 Preventivo · ⚪ General (otros niveles, por ejemplo un recordatorio manual antes de la zona de alerta)\n\n**Mail a cliente** lo envía y **Log mail** lo registra en el panel con su origen.",
+        "height": 208,
+        "width": 470,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1104,
+        -96
+      ],
+      "id": "c0a55310-62e5-4466-be68-ee9db0577189",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "\n### 📧 Paso 2: Email al cliente\n",
+        "height": 208,
+        "width": 944,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        176,
+        -96
+      ],
+      "id": "60992817-fd62-4260-9914-8fb27a5f6046",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "### 🚨 Paso 3: Alerta al equipo\n\n",
+        "height": 192,
+        "width": 928,
+        "color": "#DCBCFB"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        176,
+        112
+      ],
+      "id": "1d49b20a-22e0-4931-9a38-91244dee9b10",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n**Notificar al equipo** deja pasar los canales AMBOS e INTERNO.\n\n**Telegram interno** avisa con cliente, nivel, días restantes y consultor. Se envía en HTML con los datos escapados, así no falla si un nombre tiene caracteres especiales como \"&\".\n\n**Log Telegram** lo registra en el panel con su origen.",
+        "height": 192,
+        "width": 464,
+        "color": "#DCBAFB"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1104,
+        112
+      ],
+      "id": "8c9e7e57-1723-48d3-955c-72b200d97142",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "### ⚠️ Paso 4: Monitor de errores\n\nEste workflow es el **Error Workflow** de los otros cuatro (configurado en los ajustes de cada uno).\n\nSi alguno falla, **Error Trigger** lo detecta, **Alerta técnica Telegram** avisa el workflow, nodo y error, y **Log Error** lo registra con el nombre del workflow que falló.\n\n💡 Solo se dispara en ejecuciones automáticas (webhook, schedule, Telegram o MCP), no al ejecutar desde el editor.\n\n\n\n\n\n",
+        "height": 288,
+        "width": 1392,
+        "color": "#FFD080"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        176,
+        304
+      ],
+      "id": "4333a564-610c-4473-8209-6665f3bf505d",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "### ⚠️ Antes de ejecutar: credenciales necesarias\n\n- 🔑 **Gmail (OAuth2):** enviar los emails.\n- 🔑 **Telegram API:** alertas internas y técnicas.\n- 🔑 **Google Sheets (OAuth2):** registrar en `Panel_Monitoreo_Logs`.\n\n💡 No necesita estar activo: alcanza con elegirlo como Error Workflow en los ajustes de cada workflow.",
+        "height": 240,
+        "width": 336,
+        "color": "#C65353"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        352
+      ],
+      "id": "85ff7695-8dbc-4a7a-81c1-51f0983f8f21",
+      "name": "Sticky Note7"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Notificar al equipo": {
+      "main": [
+        [
+          {
+            "node": "Telegram interno",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Enviar mail al Cliente?": {
+      "main": [
+        [
+          {
+            "node": "Armar mensaje",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow Trigger": {
+      "main": [
+        [
+          {
+            "node": "Notificar al equipo",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "¿Enviar mail al Cliente?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Alerta técnica Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Alerta técnica Telegram": {
+      "main": [
+        [
+          {
+            "node": "Log Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Armar mensaje": {
+      "main": [
+        [
+          {
+            "node": "Mail a cliente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mail a cliente": {
+      "main": [
+        [
+          {
+            "node": "Log mail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram interno": {
+      "main": [
+        [
+          {
+            "node": "Log Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": true
+  },
+  "versionId": "a2c7e435-c4cf-4993-b552-d6933426393d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "51d9ef5f9325bde941666f96ee2329ba347896138327a33c5629fba04ceee4ef"
+  },
+  "nodeGroups": [],
+  "id": "RfeT1MWXoN0V1jJa",
+  "tags": []
+}
